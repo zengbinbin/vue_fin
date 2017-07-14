@@ -1,12 +1,16 @@
 <template>
-    <div>
+    <div class="userCenter">
         <!--头部-->
         <div class="usercenter">
             <h2>账户中心</h2>
             <span @click="mySettings"><router-link to="/settings">设置</router-link></span>
         </div>
         <!--包裹区-->
-        <scroller>
+        <scroller
+                :on-refresh="refresh"
+                :on-infinite="infinite"
+                ref="my_scroller"
+        >
             <div class="usercenterWrap">
                 <div class="acct-user-wrap">
                     <div class="acct-nolog">
@@ -132,13 +136,37 @@
         methods:{
             mySettings(){
             },
-
+            refresh(done) {
+                setTimeout(() => {
+                    let start = this.top - 1
+                    for (let i = start; i > start - 10; i--) {
+                        this.items.splice(0, 0, i + ' - keep walking, be 2 with you.')
+                    }
+                    this.top = this.top - 10;
+                    done()
+                }, 1500)
+            },
+            infinite(done) {
+                setTimeout(()=> {
+                    let start = this.bottom + 1
+                    for (let i = start; i < start + 5; i++) {
+                        this.items.push(i + ' - keep walking, be 2 with you.')
+                    }
+                    this.bottom = this.bottom + 5
+                    done()
+                }, 1500)
+            },
+            onItemClick(index, item) {
+                console.log(index)
+            }
         }
     }
 </script>
 
 <style>
-
+    .userCenter ._v-container>._v-content>.pull-to-refresh-layer[data-v-ecaca2b0] {
+        position: absolute;
+    }
     .usercenter{
         width:100%;
         height:4rem;
@@ -157,6 +185,7 @@
     .usercenterWrap{
         height:100%;
         margin-top:48px;
+        padding-bottom:54px;
     }
     .usercenter span{
         display: inline-block;

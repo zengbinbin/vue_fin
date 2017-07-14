@@ -48,7 +48,8 @@
                 // 创建分类列表的Scroll对象
                 setTimeout(()=>{
                     new BScroll(this.$refs.slideNaver, {
-                        scrollX: true
+                        startx: 0,
+                        scrollX:true
                     },1000)
                 })
 

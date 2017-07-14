@@ -2,64 +2,65 @@
     <div>
         <div class="all_container">
         <!--头部-->
-        <div class="header-Ico"><h2>全部商品</h2></div>
-         <!--搜索-->
-        <div id="search-bar">
-        <form action="">
-            <input type="search" placeholder="搜索商品" class="searchinput " @focus="addClassName($event)"
-                   :class="{ 'searchinput' : isA}">
-            <input type="button" value="取消" class="btn_res" @click="addClassSearchInput">
-        </form>
-        </div>
-         <div class="content_wrap">
-            <div class="life_model">
-                <div class="life-goodsAll">
-                    <div class="life-goodsBox">
-                        <div class="life-goodsTip">
-                            <dl class="life-goodsMark">家务</dl>
+            <div class="allshop_header">
+                <div class="header-Ico"><h2>全部商品</h2></div>
+                <div id="search-bar">
+                <form action="">
+                    <input v-show="searchShow" @focus="getFocus" type="search" placeholder="搜索商品" class="searchinput ">
+                    <input v-show="searchClose" type="search" placeholder="搜索商品" class="searchinput2 ">
+                    <input v-show="searchClose" type="button" value="取消" class="btn_res" @click="res_search">
+                </form>
+                </div>
+            </div>
+            <div class="content_wrap">
+                <div class="life_model">
+                    <div class="life-goodsAll">
+                        <div class="life-goodsBox">
+                            <div class="life-goodsTip">
+                                <dl class="life-goodsMark">家务</dl>
+                            </div>
+                            <ul class="life-goodsUl clearFix onlyStyle">
+                                <li>
+                                    <img src="./j1.jpg" alt="">
+                                    <dl>家务工具</dl>
+                                </li>
+                                <li>
+                                    <img src="./j2.jpg" alt="">
+                                    <dl>家庭清洁剂</dl>
+                                </li>
+                                <li>
+                                    <img src="./j3.jpg" alt="">
+                                    <dl>防霉除菌</dl>
+                                </li>
+                                <li>
+                                    <img src="./j4.jpg" alt="">
+                                    <dl>百纳箱</dl>
+                                </li>
+                                <li>
+                                    <img src="./j5.jpg" alt="">
+                                    <dl>衣物收纳</dl>
+                                </li>
+                                <li>
+                                    <img src="./j6.jpg" alt="">
+                                    <dl>孝素洗衣液</dl>
+                                </li>
+                                <li>
+                                    <img src="./j7.jpg" alt="">
+                                    <dl>魔力挂钩</dl>
+                                </li>
+                                <li>
+                                    <img src="./j8.jpg" alt="">
+                                    <dl>生活必备</dl>
+                                </li>
+                                <li>
+                                    <img src="./j9.jpg" alt="">
+                                    <dl>地毯地垫</dl>
+                                </li>
+                            </ul>
                         </div>
-                        <ul class="life-goodsUl clearFix onlyStyle">
-                            <li>
-                                <img src="./j1.jpg" alt="">
-                                <dl>家务工具</dl>
-                            </li>
-                            <li>
-                                <img src="./j2.jpg" alt="">
-                                <dl>家庭清洁剂</dl>
-                            </li>
-                            <li>
-                                <img src="./j3.jpg" alt="">
-                                <dl>防霉除菌</dl>
-                            </li>
-                            <li>
-                                <img src="./j4.jpg" alt="">
-                                <dl>百纳箱</dl>
-                            </li>
-                            <li>
-                                <img src="./j5.jpg" alt="">
-                                <dl>衣物收纳</dl>
-                            </li>
-                            <li>
-                                <img src="./j6.jpg" alt="">
-                                <dl>孝素洗衣液</dl>
-                            </li>
-                            <li>
-                                <img src="./j7.jpg" alt="">
-                                <dl>魔力挂钩</dl>
-                            </li>
-                            <li>
-                                <img src="./j8.jpg" alt="">
-                                <dl>生活必备</dl>
-                            </li>
-                            <li>
-                                <img src="./j9.jpg" alt="">
-                                <dl>地毯地垫</dl>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
       </div>
     </div>
 </template>
@@ -68,25 +69,33 @@
     export default {
         data(){
             return{
-                isA:true
+                searchShow:true,
+                searchClose:false
             }
         },
         methods:{
-            addClassName($event){
-                $event.currentTarget.className='searchinput2';
+            getFocus(){
+                this.searchShow=!this.searchShow
+                this.searchClose=!this.searchClose
             },
-            addClassSearchInput(){
-                    this.isA=this.isA
+            res_search(){
+                this.searchClose=!this.searchClose
+                this.searchShow=!this.searchShow
             }
         }
     }
 </script>
 
 <style>
-
     .all_container{
         position: relative;
         height:667px;
+        background-color:#F2F2F2;
+    }
+    .allshop_header{
+        height:94px;
+        margin-bottom:2px;
+        border-bottom: 1px solid #adadad;
     }
     .header-Ico {
         height: 4rem;
@@ -193,6 +202,7 @@
         text-align:center;
         border: 1px solid #f1f1f1;
         margin: 0 0 -1px -1px;
+        background-color: white;
     }
     .life-goodsUl  li img{
         width:60%;

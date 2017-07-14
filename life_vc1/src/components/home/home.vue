@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="home">
         <header>
             <el-header></el-header>
             <navter></navter>
@@ -9,83 +9,28 @@
                 :on-infinite="infinite"
                 ref="my_scroller"
         >
-             <div class="wraper">
+            <div class="wraper">
                 <!--轮播图-->
                 <app-carousel :listImg="listImg"></app-carousel>
-                <div data-v-60df7298="" class="item-combo">
-                    <div data-v-46782024="" data-v-60df7298="" title="组合图活动">
-                        <div data-v-46782024="" class="combo-title"></div>
-                        <div data-v-46782024="" class="img-wrap" style="height: 90px;">
-                            <img data-v-46782024="" usemap="#planetmap0" src="./m1.jpg" lazy="loaded" style="width: 100%; height:
-                            90px;">
-                            <map data-v-46782024="" name="planetmap0" id="planetmap0">
-                                <area data-v-46782024="" shape="rect" coords="0,9,123,88" href="http:www.baidu.com">
-                                <area data-v-46782024="" shape="rect" coords="123,9,251,90">
-                                <area data-v-46782024="" shape="rect" coords="251,9,375,89">
-                            </map>
-                        </div>
-                    </div>
+                <div class="item-combo carousel" v-for="homeImg in homeImgs">
+                    <img :src='homeImg' usemap="#planetmap" />
                 </div>
-                <div data-v-60df7298="" class="item-combo">
-                    <div data-v-46782024="" data-v-60df7298="" title="组合图活动">
-                        <div data-v-46782024="" class="combo-title"></div>
-                        <div data-v-46782024="" class="img-wrap" style="height: 150px;">
-                            <img data-v-46782024="" usemap="#planetmap1" src="./m2.jpg" lazy="loaded" style="width: 100%; height:
-                            150px;">
-                            <map data-v-46782024="" name="planetmap1" id="planetmap1">
-                                <area data-v-46782024="" shape="rect" coords="0,1,375,148">
-                            </map>
-                        </div>
-                    </div>
-                </div>
-                <div data-v-60df7298="" class="item-combo">
-                    <div title="组合图活动">
-                        <div class="combo-title"></div>
-                        <div class="img-wrap" style="height: 925px;">
-                            <img usemap="#planetmap2" src="http://i.lifevccdn.com/upload/combinationchart/c8d8ca2a7c6b468f95faefd8eb3959c1_d1242x0.jpg" lazy="loaded" style="width: 100%; height: 925px;">
-                            <map name="planetmap2" id="planetmap2">
-                                <area shape="rect" coords="0,64,375,231">
-                               <router-link to="/shop_detail"> <area shape="rect" coords="0,240,375,407"></router-link>
-                                <area shape="rect" coords="0,407,375,573">
-                                <area shape="rect" coords="0,573,123,749">
-                                <area shape="rect" coords="123,573,251,749">
-                                <area shape="rect" coords="251,573,375,749">
-                                <area shape="rect" coords="0,749,123,925">
-                                <area shape="rect" coords="123,749,251,925">
-                                <area shape="rect" coords="251,749,375,925">
-                            </map>
-                        </div>
-                    </div>
-                </div>
-                <div data-v-60df7298="" class="item-combo">
-                    <div title="组合图活动">
-                        <div class="combo-title"></div>
-                        <div class="img-wrap" style="height: 925px;">
-                            <img usemap="#planetmap2" src="http://i.lifevccdn.com/upload/combinationchart/c8d8ca2a7c6b468f95faefd8eb3959c1_d1242x0.jpg" lazy="loaded" style="width: 100%; height: 925px;">
-                            <map name="planetmap3" id="planetmap3">
-                                <area shape="rect" coords="0,64,375,231">
-                                <area shape="rect" coords="0,240,375,407">
-                                <area shape="rect" coords="0,407,375,573">
-                                <area shape="rect" coords="0,573,123,749">
-                                <area shape="rect" coords="123,573,251,749">
-                                <area shape="rect" coords="251,573,375,749">
-                                <area shape="rect" coords="0,749,123,925">
-                                <area shape="rect" coords="123,749,251,925">
-                                <area shape="rect" coords="251,749,375,925">
-                            </map>
-                        </div>
-                    </div>
-                </div>
-        </div>
+            </div>
         </scroller>
     </div>
 </template>
 <script>
+    import Vue from 'vue'
+    import {Lazyload} from 'mint-ui'
+
     import header from'../header/header.vue'
     import navter from '../navter/navter.vue'
     import carousel from '../carousel/carousel.vue'
+    import axios from 'axios'
 
-          //引入图片
+    Vue.use(Lazyload)
+
+    //引入图片
     import a1 from '../carousel/l1.jpg'
     import a2 from '../carousel/l3.jpg'
     import a3 from '../carousel/l4.jpg'
@@ -97,23 +42,35 @@
 
     export default {
         data(){
-           return{
-               listImg:[
-                   {url : a1},
-                   {url : a2},
-                   {url : a3},
-                   {url : a4},
-                   {url : a5},
-                   {url : a6},
-                   {url : a7},
-                   {url : a8},
-               ],
-           }
+            return{
+                homeImgs: [],
+                listImg:[
+                    {url : a1},
+                    {url : a2},
+                    {url : a3},
+                    {url : a4},
+                    {url : a5},
+                    {url : a6},
+                    {url : a7},
+                    {url : a8},
+                ]
+
+            }
         },
         components: {
             'el-header': header,
             navter,
             'app-carousel':carousel
+        },
+        created(){
+            axios.get('/api/home')
+                    .then(response=>{
+                const result=response.data
+                if(result.code === 0){
+                     console.log('520')
+                    this.homeImgs=result.data.homeImgs
+                }
+            })
         },
         methods:{
             refresh(done) {
@@ -139,7 +96,6 @@
             onItemClick(index, item) {
                 console.log(index)
             }
-
         }
     }
 </script>
@@ -158,7 +114,7 @@
 
     .wraper{
         height:100%;
-        padding-bottom: 4.5rem;
+        padding-bottom: 54px;
     }
 
     .carousel img {
@@ -169,7 +125,7 @@
     .item-combo {
         margin-bottom: 1rem;
     }
-    ._v-container[data-v-ecaca2b0]{
+    .home ._v-container[data-v-ecaca2b0]{
         padding-top:95px;
     }
 </style>
